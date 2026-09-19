@@ -8,121 +8,270 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Growth">
 <title>Growth Assistant</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--bg:#0b0b0f;--card:#17171e;--line:#2b2b36;--txt:#f6f6fb;--muted:#a3a3b2;--accent:#7657ff;--good:#32d27d;--warn:#ffb76a;--bad:#ff6b6b}
-*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;padding:calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom))}.wrap{max-width:720px;margin:auto}.top{display:flex;align-items:center;gap:11px;margin:2px 2px 12px}.logo{width:48px;height:48px;border-radius:14px;background:var(--accent);display:grid;place-items:center;flex:none}.title{font-size:27px;font-weight:850;line-height:1}.sub{font-size:12px;color:var(--muted);margin-top:5px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:18px}.stat{text-align:center;padding:13px 6px}.stat b{font-size:20px;display:block}.stat span{font-size:10px;color:var(--muted)}.card{padding:15px;margin:11px 0}.row{display:flex;gap:8px;flex-wrap:wrap}.half{flex:1;min-width:130px}button{width:100%;border:0;border-radius:14px;padding:13px;font:inherit;font-weight:760;color:white;background:var(--accent);cursor:pointer}button.secondary{background:#282832}button.good{background:var(--good);color:#07150d}button.warn{background:#3b2b1d;color:#ffd4a7}.platforms{display:flex;gap:8px}.platforms button{background:#24242d}.platforms button.active{background:var(--accent)}.label{font-size:12px;color:var(--muted);margin-bottom:7px}.candidate{font-size:22px;font-weight:850;margin:5px 0 7px;overflow-wrap:anywhere}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:10px;color:var(--muted);margin:0 4px 5px 0}.note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}.list{margin-top:5px}.item{border-top:1px solid var(--line);padding:10px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}.item:first-child{border-top:0}.item b{font-size:14px}.meta{font-size:10px;color:var(--muted);margin-top:3px}.item button{width:auto;padding:8px 9px;font-size:11px}.empty{text-align:center;color:var(--muted);padding:17px 4px}.pill{display:inline-flex;gap:6px;align-items:center;background:#202029;border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px;color:var(--muted)}.footer{text-align:center;color:var(--muted);font-size:10px;line-height:1.4;margin:18px 12px}.source{font-size:10px;color:#89899b;margin-top:7px}.source a{color:#aaa8ff;text-decoration:none}.hidden{display:none}
+:root{--bg:#0b0b0f;--card:#17171f;--line:#2d2d38;--txt:#f6f6fb;--muted:#a3a3b2;--accent:#7657ff;--good:#35d07f;--warn:#ffb86b;--bad:#ff6b6b;--blue:#55a7ff}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;padding:calc(14px + env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom))}.wrap{max-width:720px;margin:auto}.top{display:flex;align-items:center;gap:11px;margin:2px 2px 12px}.logo{width:50px;height:50px;border-radius:15px;background:var(--accent);display:grid;place-items:center;flex:none}.title{font-size:26px;font-weight:850;line-height:1}.sub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:18px}.stat{text-align:center;padding:13px 5px}.stat b{font-size:20px;display:block}.stat span{font-size:10px;color:var(--muted)}.card{padding:15px;margin:11px 0}.label{font-size:12px;color:var(--muted);margin-bottom:7px}.big{font-size:21px;font-weight:840;overflow-wrap:anywhere}.row{display:flex;gap:8px;flex-wrap:wrap}.half{flex:1;min-width:130px}button,input{width:100%;border-radius:14px;padding:13px;font:inherit}button{border:0;background:var(--accent);color:#fff;font-weight:780;cursor:pointer}button.secondary{background:#282833}button.good{background:var(--good);color:#06140c}button.blue{background:#166bd7}button.warn{background:#3d2e1e;color:#ffd6ad}button:disabled{opacity:.45}.small{font-size:11px;color:var(--muted);line-height:1.45}.status{padding:9px 11px;border:1px solid var(--line);border-radius:13px;background:#111118;font-size:11px;line-height:1.4}.status.good{border-color:#225c42;color:#8cf0b8}.status.bad{border-color:#663333;color:#ffaaaa}.status.warn{border-color:#604929;color:#ffd298}.pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#202029;border-radius:999px;padding:6px 9px;font-size:10px;color:var(--muted);margin:2px 4px 2px 0}.queue{margin-top:9px}.item{padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.item:first-child{border-top:0}.meta{font-size:10px;color:var(--muted);margin-top:3px}.item button{width:auto;padding:7px 9px;font-size:10px}.tabs{display:flex;gap:7px}.tabs button{background:#24242d}.tabs button.active{background:var(--accent)}details{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#121218}summary{font-size:12px;font-weight:750;cursor:pointer}.setup input{background:#0f0f15;color:var(--txt);border:1px solid var(--line);margin:7px 0}.links a{color:#aaa8ff;text-decoration:none;font-size:11px}.footer{text-align:center;color:var(--muted);font-size:10px;line-height:1.4;margin:18px 8px}.hidden{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="logo"><svg width="32" height="32" viewBox="0 0 100 100" aria-hidden="true"><path d="M14 70L38 47L58 58L84 22" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="70" r="6" fill="white"/><circle cx="38" cy="47" r="6" fill="white"/><circle cx="58" cy="58" r="6" fill="white"/><circle cx="84" cy="22" r="6" fill="white"/></svg></div>
-    <div><div class="title">Growth Assistant</div><div class="sub">A fila já vem pronta — sem colar perfis</div></div>
+    <div class="logo"><svg width="32" height="32" viewBox="0 0 100 100"><path d="M14 70L38 47L58 58L84 22" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="70" r="6" fill="white"/><circle cx="38" cy="47" r="6" fill="white"/><circle cx="58" cy="58" r="6" fill="white"/><circle cx="84" cy="22" r="6" fill="white"/></svg></div>
+    <div><div class="title">Growth Assistant</div><div class="sub">YouTube via API • Instagram em sequência automática</div></div>
   </div>
 
   <div class="stats">
-    <div class="stat"><b id="sQueue">0</b><span>na fila</span></div>
-    <div class="stat"><b id="sDone">0</b><span>seguidos/subs</span></div>
-    <div class="stat"><b id="sRate">0%</b><span>retorno</span></div>
+    <div class="stat"><b id="ytPending">0</b><span>YouTube na fila</span></div>
+    <div class="stat"><b id="igPending">0</b><span>Instagram na fila</span></div>
+    <div class="stat"><b id="doneCount">0</b><span>processados</span></div>
   </div>
 
   <div class="card">
-    <div class="row" style="align-items:center;justify-content:space-between">
-      <span class="pill">Lista automática • setup / hardware / streaming / gaming</span>
+    <div class="tabs">
+      <button id="tabYt" class="active" onclick="showTab('youtube')">YouTube</button>
+      <button id="tabIg" onclick="showTab('instagram')">Instagram</button>
     </div>
-    <div class="platforms" style="margin-top:10px">
-      <button id="pAll" class="active" onclick="setPlatform('all')">Todos</button>
-      <button id="pIg" onclick="setPlatform('instagram')">Instagram</button>
-      <button id="pYt" onclick="setPlatform('youtube')">YouTube</button>
+  </div>
+
+  <section id="youtubePanel">
+    <div class="card setup">
+      <div class="label">1. Configuração única do YouTube</div>
+      <div class="small">O Client ID não é senha. Ele fica salvo só neste iPhone. O token OAuth fica apenas em memória.</div>
+      <input id="clientId" placeholder="Cole o OAuth Client ID do Google aqui" autocomplete="off" autocapitalize="off">
+      <div class="row">
+        <div class="half"><button class="secondary" onclick="saveClientId()">Salvar Client ID</button></div>
+        <div class="half"><button class="blue" onclick="connectYouTube()">Conectar YouTube</button></div>
+      </div>
+      <div id="ytAuthStatus" class="status warn" style="margin-top:9px">YouTube ainda não conectado.</div>
+      <details style="margin-top:10px">
+        <summary>Como criar o Client ID uma única vez</summary>
+        <div class="small" style="margin-top:8px">Ative YouTube Data API v3, crie credencial OAuth do tipo <b>Web application</b> e use como origem JavaScript:</div>
+        <div id="originText" class="status" style="margin-top:7px"></div>
+        <div class="links" style="margin-top:8px"><a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Abrir YouTube Data API</a> · <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Abrir Credenciais</a></div>
+      </details>
     </div>
-    <div class="note">O app alimenta a fila sozinho com criadores públicos do mesmo nicho. Quando você conclui ou ignora um perfil, ele avança para o próximo.</div>
-  </div>
 
-  <div class="card">
-    <div class="label">Próximo perfil</div>
-    <div id="nextBox"></div>
-  </div>
+    <div class="card">
+      <div class="label">2. Descoberta automática</div>
+      <div class="big" id="ytNextName">Conecte o YouTube para gerar a fila.</div>
+      <div id="ytNextMeta" class="small" style="margin-top:5px"></div>
+      <div style="height:10px"></div>
+      <div class="row">
+        <div class="half"><button id="ytSubscribeBtn" class="good" onclick="subscribeNextYouTube()" disabled>Inscrever no próximo</button></div>
+        <div class="half"><button id="ytRefillBtn" class="secondary" onclick="refillYouTube()">Buscar novos canais</button></div>
+      </div>
+      <div id="ytActionStatus" class="status" style="margin-top:9px">Nenhuma ação ainda.</div>
+      <div class="small" style="margin-top:7px">Cada toque em “Inscrever no próximo” cria <b>uma</b> inscrição via API e já prepara o canal seguinte.</div>
+    </div>
 
-  <div class="card">
-    <div class="label">Fila atual</div>
-    <div id="queueList" class="list"></div>
-  </div>
+    <div class="card">
+      <div class="label">Próximos canais</div>
+      <div id="ytQueue" class="queue"></div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="label">Histórico</div>
-    <div id="historyList" class="list"></div>
-  </div>
+  <section id="instagramPanel" class="hidden">
+    <div class="card">
+      <div class="label">Modo sequência do Instagram</div>
+      <div class="big" id="igNextName"></div>
+      <div id="igNextMeta" class="small" style="margin-top:5px"></div>
+      <div style="height:10px"></div>
+      <div class="row">
+        <div class="half"><button id="igStartBtn" class="good" onclick="startInstagramAuto()">Iniciar sequência</button></div>
+        <div class="half"><button class="secondary" onclick="stopInstagramAuto()">Parar</button></div>
+      </div>
+      <div id="igStatus" class="status" style="margin-top:9px">Você toca em “Seguir” no Instagram. Ao voltar, o app marca o perfil como visitado e tenta abrir o próximo automaticamente.</div>
+      <div class="small" style="margin-top:7px">O iOS pode bloquear a reabertura automática em alguns casos; se isso ocorrer, aparece o botão “Abrir próximo”. O app não consegue confirmar se você realmente seguiu.</div>
+      <button id="igFallbackBtn" class="secondary hidden" style="margin-top:9px" onclick="openNextInstagram()">Abrir próximo</button>
+    </div>
+
+    <div class="card">
+      <div class="label">Fila Instagram</div>
+      <div id="igQueue" class="queue"></div>
+    </div>
+  </section>
 
   <div class="card">
     <div class="row">
-      <div class="half"><button class="secondary" onclick="exportCSV()">Exportar CSV</button></div>
-      <div class="half"><button class="warn" onclick="resetPool()">Recomeçar lista</button></div>
+      <div class="half"><button class="secondary" onclick="exportHistory()">Exportar histórico</button></div>
+      <div class="half"><button class="warn" onclick="resetAll()">Recomeçar filas</button></div>
     </div>
   </div>
 
-  <div class="footer">A lista é curada por relevância de nicho. O app não executa follow/sub em massa; você confirma a ação dentro do Instagram ou YouTube.</div>
+  <div class="footer">YouTube: usa OAuth 2.0 + YouTube Data API. Instagram: não existe endpoint oficial geral para seguir contas arbitrárias; por isso o toque em “Seguir” continua dentro do Instagram.</div>
 </div>
 <script>
-const VERSION='auto-v1-20260919';
-const KEY='growth_assistant_auto_v1';
-const DISCOVERY_POOL=[
- {id:'phard-ig',platform:'instagram',handle:'@phardbr',name:'PHard',url:'https://www.instagram.com/phardbr/',category:'periféricos • setup gamer',match:96,source:'https://linktr.ee/phard'},
- {id:'phard-yt',platform:'youtube',handle:'PHard',name:'PHard',url:'https://www.youtube.com/channel/UCV_i29pjYarPH8tqZhd3DoA?sub_confirmation=1',category:'periféricos • setup gamer',match:96,source:'https://linktr.ee/phard'},
- {id:'covinha-ig',platform:'instagram',handle:'@o_covinha',name:'O Covinha',url:'https://www.instagram.com/o_covinha/',category:'gaming • streaming • setup',match:90,source:'https://linktr.ee/O_covinha'},
- {id:'covinha-yt',platform:'youtube',handle:'@o_covinha',name:'O Covinha',url:'https://www.youtube.com/@o_covinha?sub_confirmation=1',category:'gaming • streaming • setup',match:90,source:'https://linktr.ee/O_covinha'},
- {id:'jp-ig',platform:'instagram',handle:'@joao.pedrofernandes02',name:'JP Tech Games',url:'https://www.instagram.com/joao.pedrofernandes02/',category:'PC gamer • hardware • ofertas',match:94,source:'https://linktr.ee/economizandocomjp'},
- {id:'jp-yt',platform:'youtube',handle:'@JPTechGames',name:'JP Tech Games',url:'https://www.youtube.com/@JPTechGames?sub_confirmation=1',category:'PC gamer • hardware • ofertas',match:94,source:'https://linktr.ee/economizandocomjp'},
- {id:'lucas-ig',platform:'instagram',handle:'@lucas.ishii',name:'Lucas Ishii',url:'https://www.instagram.com/lucas.ishii/',category:'setup • periféricos • notebooks',match:98,source:'https://linktr.ee/lucas.ishii'},
- {id:'lucas-yt',platform:'youtube',handle:'Lucas Ishii',name:'Lucas Ishii',url:'https://www.youtube.com/channel/UCitSe-3G6Ko5_0yJQoG2fBw?sub_confirmation=1',category:'setup • periféricos • notebooks',match:98,source:'https://www.letsplayindex.com/channels/526124-lucas-ishii'},
- {id:'igogi-ig',platform:'instagram',handle:'@mas.gigio',name:'igog1',url:'https://www.instagram.com/mas.gigio/',category:'gaming • streaming • periféricos',match:84,source:'https://linktr.ee/igog1'},
- {id:'igogi-yt',platform:'youtube',handle:'@igogis',name:'igog1',url:'https://www.youtube.com/@igogis?sub_confirmation=1',category:'gaming • streaming • periféricos',match:84,source:'https://linktr.ee/igog1'},
- {id:'setupquepresta',platform:'creator',handle:'SetupQuePresta',name:'SetupQuePresta',url:'https://linktr.ee/setupquepresta',category:'setup gamer • custo-benefício',match:97,source:'https://linktr.ee/setupquepresta'},
- {id:'netotech',platform:'creator',handle:'Neto Martineli',name:'Neto Martineli | Setup Gamer',url:'https://linktr.ee/contato.netotech',category:'setup • reviews • unboxing',match:97,source:'https://linktr.ee/contato.netotech'},
- {id:'maverik',platform:'creator',handle:'MAVERIK GAMER',name:'MAVERIK GAMER',url:'https://linktr.ee/maverikgamerofficial',category:'setup gamer • hardware • streaming',match:93,source:'https://linktr.ee/maverikgamerofficial'},
- {id:'nxtz',platform:'creator',handle:'Nxtz1__',name:'Nxtz1__',url:'https://linktr.ee/nxtz_fps1',category:'gaming • streaming • periféricos',match:86,source:'https://linktr.ee/nxtz_fps1'},
- {id:'spa',platform:'creator',handle:'SPA do Hardware',name:'SPA do Hardware',url:'https://linktr.ee/spadohardware',category:'hardware • PC gamer',match:91,source:'https://linktr.ee/spadohardware'},
- {id:'gbox',platform:'creator',handle:'gbox.201',name:'gbox.201',url:'https://linktr.ee/gbox.201',category:'hardware • setups • unboxing',match:91,source:'https://linktr.ee/gbox.201'},
- {id:'achados-ig',platform:'instagram',handle:'@achadosdainternet999',name:'Achados da Internet 999',url:'https://www.instagram.com/achadosdainternet999/',category:'acessórios gamer • periféricos',match:83,source:'https://linktr.ee/achadosdainternet999'},
- {id:'duke-ig',platform:'instagram',handle:'@dukefrancoyt',name:'DukeFranco',url:'https://www.instagram.com/dukefrancoyt/',category:'gaming • live • PC gamer',match:82,source:'https://solo.to/dukefranco'},
- {id:'duke-yt',platform:'youtube',handle:'@DukeFranco',name:'DukeFranco',url:'https://www.youtube.com/@DukeFranco?sub_confirmation=1',category:'gaming • live • PC gamer',match:82,source:'https://solo.to/dukefranco'}
-];
+'use strict';
+const VERSION='oauth-v2-20260919';
+const STATE_KEY='growth_assistant_oauth_v2';
+const CLIENT_KEY='growth_assistant_google_client_id';
+const YT_SCOPE='https://www.googleapis.com/auth/youtube.force-ssl';
+const YT_QUERIES=['setup gamer tecnologia','pc gamer hardware','streaming setup periféricos','tecnologia gaming português','hardware reviews unboxing','gaming streaming portugal','setup gamer brasil'];
+const IG_POOL=[{"id": "phard-ig", "handle": "@phardbr", "name": "PHard", "url": "https://www.instagram.com/phardbr/", "category": "periféricos • setup gamer", "match": 96}, {"id": "covinha-ig", "handle": "@o_covinha", "name": "O Covinha", "url": "https://www.instagram.com/o_covinha/", "category": "gaming • streaming • setup", "match": 90}, {"id": "jp-ig", "handle": "@joao.pedrofernandes02", "name": "JP Tech Games", "url": "https://www.instagram.com/joao.pedrofernandes02/", "category": "PC gamer • hardware • ofertas", "match": 94}, {"id": "lucas-ig", "handle": "@lucas.ishii", "name": "Lucas Ishii", "url": "https://www.instagram.com/lucas.ishii/", "category": "setup • periféricos • notebooks", "match": 98}, {"id": "igogi-ig", "handle": "@mas.gigio", "name": "igog1", "url": "https://www.instagram.com/mas.gigio/", "category": "gaming • streaming • periféricos", "match": 84}, {"id": "achados-ig", "handle": "@achadosdainternet999", "name": "Achados da Internet 999", "url": "https://www.instagram.com/achadosdainternet999/", "category": "acessórios gamer • periféricos", "match": 83}, {"id": "duke-ig", "handle": "@dukefrancoyt", "name": "DukeFranco", "url": "https://www.instagram.com/dukefrancoyt/", "category": "gaming • live • PC gamer", "match": 82}];
+let tokenClient=null;
+let accessToken='';
+let tokenExpiry=0;
+let pendingAfterAuth=null;
 let state=loadState();
+
+function freshState(){
+  return {version:VERSION,tab:'youtube',queryIndex:0,youtube:[],instagram:IG_POOL.map(x=>({...x,status:'new'})),history:[],igAuto:false,igVisit:null};
+}
 function loadState(){
-  try{
-    const s=JSON.parse(localStorage.getItem(KEY));
-    if(s && s.version===VERSION && Array.isArray(s.items)) return s;
-  }catch(e){}
+  try{const s=JSON.parse(localStorage.getItem(STATE_KEY));if(s&&s.version===VERSION&&Array.isArray(s.youtube)&&Array.isArray(s.instagram)&&Array.isArray(s.history))return s}catch(e){}
   return freshState();
 }
-function freshState(){
-  const items=DISCOVERY_POOL.map(x=>({...x,status:'new',followback:false,created:new Date().toISOString()}));
-  return {version:VERSION,platform:'all',items};
+function save(){localStorage.setItem(STATE_KEY,JSON.stringify(state));render()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function nowIso(){return new Date().toISOString()}
+function getClientId(){return (localStorage.getItem(CLIENT_KEY)||'').trim()}
+function validClientId(v){return /^[0-9]+-[a-z0-9_-]+\.apps\.googleusercontent\.com$/i.test((v||'').trim())}
+function saveClientId(){
+  const v=document.getElementById('clientId').value.trim();
+  if(!validClientId(v)){setStatus('ytAuthStatus','Client ID inválido. Ele normalmente termina em .apps.googleusercontent.com','bad');return false}
+  localStorage.setItem(CLIENT_KEY,v);tokenClient=null;setStatus('ytAuthStatus','Client ID salvo. Agora toque em “Conectar YouTube”.','good');return true;
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
-function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function setPlatform(p){state.platform=p;save()}
-function platformMatches(i){return state.platform==='all'||i.platform===state.platform||i.platform==='creator'}
-function pending(){return state.items.filter(i=>i.status==='new'&&platformMatches(i)).sort((a,b)=>b.match-a.match)}
-function nextItem(){return pending()[0]||null}
-function mark(id,status){const x=state.items.find(i=>i.id===id);if(!x)return;x.status=status;x.actionAt=new Date().toISOString();save()}
-function followback(id){const x=state.items.find(i=>i.id===id);if(!x)return;x.followback=!x.followback;save()}
-function openProfile(id){const x=state.items.find(i=>i.id===id);if(x) window.location.href=x.url}
-function resetPool(){if(confirm('Recomeçar a lista automática e apagar o histórico?')){state=freshState();save()}}
+function setStatus(id,msg,kind=''){
+  const el=document.getElementById(id);if(!el)return;el.textContent=msg;el.className='status'+(kind?' '+kind:'');
+}
+function showTab(tab){state.tab=tab;save()}
+function ytPendingItems(){return state.youtube.filter(x=>x.status==='new')}
+function igPendingItems(){return state.instagram.filter(x=>x.status==='new').sort((a,b)=>(b.match||0)-(a.match||0))}
+function nextYT(){return ytPendingItems()[0]||null}
+function nextIG(){return igPendingItems()[0]||null}
+function normalizedChannelId(x){return String(x||'').trim()}
+function channelSeen(id){return state.youtube.some(x=>x.channelId===id)||state.history.some(x=>x.platform==='youtube'&&x.channelId===id)}
+function addYouTubeResults(items,query){
+  let added=0;
+  for(const item of items||[]){
+    const id=normalizedChannelId(item?.id?.channelId);if(!id||channelSeen(id))continue;
+    state.youtube.push({id:'yt-'+id,platform:'youtube',channelId:id,name:item?.snippet?.title||'Canal YouTube',description:item?.snippet?.description||'',query,status:'new',created:nowIso()});added++;
+  }
+  return added;
+}
+function tokenValid(){return !!accessToken && Date.now()<tokenExpiry-60000}
+function initTokenClient(){
+  const clientId=getClientId();
+  if(!validClientId(clientId))throw new Error('Configure um OAuth Client ID válido primeiro.');
+  if(!window.google?.accounts?.oauth2)throw new Error('Google Identity Services ainda está carregando. Tente novamente em alguns segundos.');
+  if(tokenClient)return tokenClient;
+  tokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:clientId,
+    scope:YT_SCOPE,
+    callback:(resp)=>{
+      if(resp?.error){setStatus('ytAuthStatus','Falha OAuth: '+resp.error,'bad');return}
+      accessToken=resp.access_token||'';
+      tokenExpiry=Date.now()+((Number(resp.expires_in)||3600)*1000);
+      setStatus('ytAuthStatus','YouTube conectado. Token válido nesta sessão.','good');
+      const action=pendingAfterAuth;pendingAfterAuth=null;
+      render();
+      if(action)setTimeout(()=>action(),50);
+    }
+  });
+  return tokenClient;
+}
+function connectYouTube(){
+  try{
+    if(!getClientId()&&!saveClientId())return;
+    pendingAfterAuth=()=>{if(ytPendingItems().length<5)refillYouTube(true)};
+    initTokenClient().requestAccessToken({prompt:''});
+  }catch(e){setStatus('ytAuthStatus',e.message,'bad')}
+}
+function withToken(action){
+  if(tokenValid()){action();return true}
+  try{pendingAfterAuth=action;initTokenClient().requestAccessToken({prompt:''});return false}catch(e){setStatus('ytAuthStatus',e.message,'bad');return false}
+}
+async function refillYouTube(fromAuth=false){
+  if(!tokenValid()){
+    if(fromAuth)return;
+    withToken(()=>refillYouTube(true));return;
+  }
+  const q=YT_QUERIES[state.queryIndex%YT_QUERIES.length];state.queryIndex=(state.queryIndex+1)%YT_QUERIES.length;
+  setStatus('ytActionStatus','Buscando canais: '+q+'…');
+  try{
+    const url='https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&maxResults=25&relevanceLanguage=pt&q='+encodeURIComponent(q);
+    const res=await fetch(url,{headers:{Authorization:'Bearer '+accessToken}});
+    const data=await res.json().catch(()=>({}));
+    if(res.status===401){accessToken='';tokenExpiry=0;throw new Error('Sessão Google expirou. Toque em conectar novamente.')}
+    if(!res.ok)throw new Error(data?.error?.message||('Erro HTTP '+res.status));
+    const added=addYouTubeResults(data.items,q);save();
+    setStatus('ytActionStatus',added+' novos canais adicionados à fila.','good');
+  }catch(e){setStatus('ytActionStatus',e.message,'bad')}
+}
+async function subscribeChannel(channel){
+  const body={snippet:{resourceId:{kind:'youtube#channel',channelId:channel.channelId}}};
+  const res=await fetch('https://www.googleapis.com/youtube/v3/subscriptions?part=snippet',{method:'POST',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const data=await res.json().catch(()=>({}));
+  if(res.ok)return {ok:true,data};
+  const reason=data?.error?.errors?.[0]?.reason||'';
+  if(res.status===400 && reason==='subscriptionDuplicate')return {ok:true,duplicate:true,data};
+  if(res.status===401){accessToken='';tokenExpiry=0}
+  return {ok:false,status:res.status,reason,message:data?.error?.message||('Erro HTTP '+res.status)};
+}
+function subscribeNextYouTube(){
+  const c=nextYT();
+  if(!c){withToken(()=>refillYouTube(true));return}
+  withToken(async()=>{
+    const btn=document.getElementById('ytSubscribeBtn');btn.disabled=true;
+    setStatus('ytActionStatus','Inscrevendo em '+c.name+'…');
+    try{
+      const r=await subscribeChannel(c);
+      if(!r.ok)throw new Error(r.message+(r.reason?' ['+r.reason+']':''));
+      c.status=r.duplicate?'already':'subscribed';c.processed=nowIso();
+      state.history.unshift({platform:'youtube',channelId:c.channelId,name:c.name,status:c.status,processed:c.processed});
+      save();
+      setStatus('ytActionStatus',r.duplicate?'Você já era inscrito. Avancei para o próximo.':'Inscrição feita. Próximo canal pronto.','good');
+      if(ytPendingItems().length<5)refillYouTube(true);
+    }catch(e){setStatus('ytActionStatus',e.message,'bad');render()}
+  });
+}
+function skipYT(id){const c=state.youtube.find(x=>x.id===id);if(!c)return;c.status='skipped';c.processed=nowIso();state.history.unshift({platform:'youtube',channelId:c.channelId,name:c.name,status:'skipped',processed:c.processed});save()}
+
+function openNextInstagram(){
+  const c=nextIG();if(!c){stopInstagramAuto();setStatus('igStatus','Fila do Instagram concluída.','good');return}
+  state.igVisit={id:c.id,leftAt:Date.now()};localStorage.setItem(STATE_KEY,JSON.stringify(state));
+  document.getElementById('igFallbackBtn').classList.add('hidden');
+  window.location.href=c.url;
+}
+function startInstagramAuto(){state.igAuto=true;save();setStatus('igStatus','Sequência ativa. Abrindo o primeiro perfil…','good');setTimeout(openNextInstagram,120)}
+function stopInstagramAuto(){state.igAuto=false;state.igVisit=null;save();setStatus('igStatus','Sequência parada.')}
+function markInstagramVisited(id){
+  const c=state.instagram.find(x=>x.id===id);if(!c||c.status!=='new')return false;
+  c.status='visited';c.processed=nowIso();state.history.unshift({platform:'instagram',name:c.name,handle:c.handle,status:'visited',processed:c.processed});return true;
+}
+function handleVisibility(){
+  if(document.visibilityState!=='visible')return;
+  if(!state.igAuto||!state.igVisit)return;
+  const visit=state.igVisit;state.igVisit=null;
+  if(Date.now()-visit.leftAt<1200){save();return}
+  markInstagramVisited(visit.id);save();
+  if(!state.igAuto)return;
+  if(!nextIG()){stopInstagramAuto();setStatus('igStatus','Fila do Instagram concluída.','good');return}
+  setStatus('igStatus','Perfil processado. Tentando abrir o próximo automaticamente…','good');
+  const fallback=document.getElementById('igFallbackBtn');fallback.classList.remove('hidden');
+  setTimeout(()=>{if(state.igAuto)openNextInstagram()},900);
+}
+document.addEventListener('visibilitychange',handleVisibility);
+function skipIG(id){const c=state.instagram.find(x=>x.id===id);if(!c)return;c.status='skipped';c.processed=nowIso();state.history.unshift({platform:'instagram',name:c.name,handle:c.handle,status:'skipped',processed:c.processed});save()}
+function exportHistory(){
+  const blob=new Blob([JSON.stringify({exportedAt:nowIso(),history:state.history},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='growth-history.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+}
+function resetAll(){if(!confirm('Recomeçar as filas e apagar o histórico local?'))return;const tab=state.tab;state=freshState();state.tab=tab;localStorage.setItem(STATE_KEY,JSON.stringify(state));render()}
 function render(){
-  ['all','instagram','youtube'].forEach(p=>document.getElementById(p==='all'?'pAll':p==='instagram'?'pIg':'pYt').classList.toggle('active',state.platform===p));
-  const allPending=state.items.filter(i=>i.status==='new').length,done=state.items.filter(i=>i.status==='done').length,fb=state.items.filter(i=>i.followback).length;
-  sQueue.textContent=allPending;sDone.textContent=done;sRate.textContent=(done?Math.round(fb/done*100):0)+'%';
-  const n=nextItem();
-  nextBox.innerHTML=n?`<div class="candidate">${esc(n.name)}</div><span class="badge">${esc(n.platform==='creator'?'Instagram + YouTube':n.platform)}</span><span class="badge">match ${n.match}%</span><span class="badge">${esc(n.category)}</span><div class="source">Fonte pública: <a href="${esc(n.source)}" target="_blank" rel="noopener">verificar</a></div><div style="height:12px"></div><button onclick="openProfile('${n.id}')">Abrir agora</button><div style="height:8px"></div><div class="row"><div class="half"><button class="good" onclick="mark('${n.id}','done')">Já segui / subscrevi</button></div><div class="half"><button class="secondary" onclick="mark('${n.id}','skip')">Ignorar e avançar</button></div></div>`:'<div class="empty">Sem mais candidatos nesse filtro. Troque o filtro ou recomece a lista.</div>';
-  const q=pending().slice(0,8);queueList.innerHTML=q.length?q.map(i=>`<div class="item"><div><b>${esc(i.name)}</b><div class="meta">${esc(i.platform==='creator'?'Instagram + YouTube':i.platform)} • ${esc(i.category)} • match ${i.match}%</div></div><button class="secondary" onclick="openProfile('${i.id}')">Abrir</button></div>`).join(''):'<div class="empty">Fila vazia.</div>';
-  const h=state.items.filter(i=>i.status!=='new').sort((a,b)=>(b.actionAt||'').localeCompare(a.actionAt||'')).slice(0,10);historyList.innerHTML=h.length?h.map(i=>`<div class="item"><div><b>${esc(i.name)}</b><div class="meta">${esc(i.status==='done'?'feito':'ignorado')} • ${esc(i.platform==='creator'?'criador':i.platform)}</div></div><div>${i.status==='done'?`<button class="${i.followback?'good':'secondary'}" onclick="followback('${i.id}')">${i.followback?'Retornou ✓':'Marcar retorno'}</button>`:''}</div></div>`).join(''):'<div class="empty">Nada ainda.</div>';
+  document.getElementById('originText').textContent=location.origin;
+  const ci=document.getElementById('clientId');if(ci&&!ci.value)ci.value=getClientId();
+  const ytp=ytPendingItems(),igp=igPendingItems();
+  document.getElementById('ytPending').textContent=ytp.length;document.getElementById('igPending').textContent=igp.length;document.getElementById('doneCount').textContent=state.history.length;
+  const yt=ytp[0];document.getElementById('ytNextName').textContent=yt?yt.name:'Fila vazia.';document.getElementById('ytNextMeta').textContent=yt?('Descoberto por: '+yt.query):'Toque em “Buscar novos canais”.';
+  document.getElementById('ytSubscribeBtn').disabled=!yt;
+  document.getElementById('ytQueue').innerHTML=ytp.length?ytp.slice(0,8).map(x=>'<div class="item"><div><b>'+esc(x.name)+'</b><div class="meta">'+esc(x.query||'YouTube')+'</div></div><button class="secondary" onclick="skipYT(\''+esc(x.id)+'\')">Ignorar</button></div>').join(''):'<div class="small">Nenhum canal pendente.</div>';
+  const ig=igp[0];document.getElementById('igNextName').textContent=ig?(ig.name+' '+ig.handle):'Fila concluída.';document.getElementById('igNextMeta').textContent=ig?(ig.category+' • relevância '+ig.match+'/100'):'';
+  document.getElementById('igQueue').innerHTML=igp.length?igp.slice(0,8).map(x=>'<div class="item"><div><b>'+esc(x.name)+'</b><div class="meta">'+esc(x.handle)+' • '+esc(x.category)+'</div></div><button class="secondary" onclick="skipIG(\''+esc(x.id)+'\')">Ignorar</button></div>').join(''):'<div class="small">Nenhum perfil pendente.</div>';
+  const ytTab=state.tab!=='instagram';document.getElementById('youtubePanel').classList.toggle('hidden',!ytTab);document.getElementById('instagramPanel').classList.toggle('hidden',ytTab);document.getElementById('tabYt').classList.toggle('active',ytTab);document.getElementById('tabIg').classList.toggle('active',!ytTab);
+  if(tokenValid())setStatus('ytAuthStatus','YouTube conectado. Token válido nesta sessão.','good');
 }
-function exportCSV(){
- const rows=[['platform','handle','name','url','category','match','status','followback','created','actionAt']];
- state.items.forEach(i=>rows.push([i.platform,i.handle,i.name,i.url,i.category,i.match,i.status,i.followback,i.created,i.actionAt||'']));
- const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
- const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='growth-assistant.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-}
+window.GrowthTest={validClientId,addYouTubeResults,channelSeen,normalizedChannelId,subscribeChannel,markInstagramVisited,freshState,ytPendingItems,igPendingItems};
 render();
 </script>
 </body>
