@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Growth">
+<title>Growth Assistant</title>
+<style>
+:root{--bg:#0b0b0f;--card:#17171e;--line:#2c2c35;--txt:#f7f7fb;--muted:#a8a8b4;--accent:#7657ff;--good:#34d17b;--warn:#4a321d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;padding:calc(12px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom))}
+.wrap{max-width:720px;margin:auto}.title{font-size:28px;font-weight:850}.sub,.small{color:var(--muted);font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:18px}.stat{text-align:center;padding:14px 6px}.stat b{font-size:21px;display:block}.stat span{font-size:11px;color:var(--muted)}.card{padding:15px;margin:12px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}.half{flex:1;min-width:125px}.label{font-size:12px;color:var(--muted);margin:4px 2px 7px}input,button{width:100%;border-radius:14px;padding:13px;font:inherit}input{border:1px solid var(--line);background:#101016;color:var(--txt)}button{border:0;background:var(--accent);color:white;font-weight:750}button.secondary{background:#282832}button.good{background:var(--good);color:#08150e}button.warn{background:var(--warn);color:#ffd5ad}
+.platforms{display:flex;gap:8px}.platforms button{background:#25252e}.platforms button.active{background:var(--accent)}.candidate{font-size:22px;font-weight:820;margin:6px 0}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px;color:var(--muted)}.list{margin-top:6px}.item{border-top:1px solid var(--line);padding:10px 0;display:flex;justify-content:space-between;gap:10px}.item:first-child{border-top:0}.item .meta{font-size:11px;color:var(--muted)}.item button{width:auto;padding:8px 10px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:18px}.footer{text-align:center;color:var(--muted);font-size:11px;margin:18px 0}
+.logo{width:52px;height:52px;border-radius:14px;background:#7657ff;display:grid;place-items:center;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="logo">
+<svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true">
+<path d="M14 70L38 47L58 58L84 22" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="14" cy="70" r="6" fill="white"/><circle cx="38" cy="47" r="6" fill="white"/><circle cx="58" cy="58" r="6" fill="white"/><circle cx="84" cy="22" r="6" fill="white"/>
+</svg>
+</div>
+<div class="title">Growth Assistant</div>
+<div class="sub">Instagram + YouTube • histórico salvo neste iPhone</div>
+
+<div class="stats">
+<div class="stat"><b id="sQueue">0</b><span>na fila</span></div>
+<div class="stat"><b id="sDone">0</b><span>seguidos/subs</span></div>
+<div class="stat"><b id="sRate">0%</b><span>retorno</span></div>
+</div>
+
+<div class="card">
+<div class="platforms">
+<button id="pIg" class="active" onclick="setPlatform('instagram')">Instagram</button>
+<button id="pYt" onclick="setPlatform('youtube')">YouTube</button>
+</div>
+<div class="label" style="margin-top:12px">Encontrar pessoas/canais do seu nicho</div>
+<div class="row">
+<div class="half" style="flex:2"><input id="query" value="setup gaming streaming tecnologia"></div>
+<div class="half"><button onclick="searchPlatform()">Pesquisar</button></div>
+</div>
+<div class="small" style="margin-top:8px">A busca abre a plataforma escolhida. Você decide quem realmente vale acompanhar.</div>
+</div>
+
+<div class="card">
+<div class="label">Adicionar perfil/canal</div>
+<input id="handle" placeholder="@perfil ou nome do canal">
+<div style="height:8px"></div>
+<input id="url" placeholder="Cole o link do perfil/canal">
+<div style="height:8px"></div>
+<input id="category" placeholder="Nicho: setup, hardware, gaming...">
+<div style="height:10px"></div>
+<button onclick="addCandidate()">Adicionar à fila</button>
+</div>
+
+<div class="card">
+<div class="label">Próximo</div>
+<div id="nextBox"></div>
+</div>
+
+<div class="card">
+<div class="label">Últimos</div>
+<div id="list" class="list"></div>
+</div>
+
+<div class="card">
+<div class="row">
+<div class="half"><button class="secondary" onclick="exportCSV()">Exportar CSV</button></div>
+<div class="half"><button class="warn" onclick="resetAll()">Limpar dados</button></div>
+</div>
+</div>
+
+<div class="footer">Sem follow/sub automático em massa. Cada ação é escolhida e confirmada por você.</div>
+</div>
+
+<script>
+const KEY='growth_assistant_v3';
+let state;
+try{state=JSON.parse(localStorage.getItem(KEY))||{platform:'instagram',items:[]}}catch(e){state={platform:'instagram',items:[]}}
+
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
+function setPlatform(p){state.platform=p;save()}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+function searchPlatform(){
+ const q=document.getElementById('query').value.trim(); if(!q)return;
+ const u=state.platform==='youtube'
+ ?'https://www.youtube.com/results?search_query='+encodeURIComponent(q)
+ :'https://www.instagram.com/explore/search/keyword/?q='+encodeURIComponent(q);
+ location.href=u;
+}
+function addCandidate(){
+ const handle=document.getElementById('handle').value.trim();
+ const url=document.getElementById('url').value.trim();
+ const category=document.getElementById('category').value.trim();
+ if(!handle||!url){alert('Preencha o perfil/canal e o link.');return}
+ state.items.unshift({id:Date.now(),platform:state.platform,handle,url,category,status:'new',followback:false,created:new Date().toISOString()});
+ ['handle','url','category'].forEach(id=>document.getElementById(id).value='');save();
+}
+function mark(id,status){const x=state.items.find(i=>i.id===id);if(x){x.status=status;x.actionAt=new Date().toISOString();save()}}
+function followback(id){const x=state.items.find(i=>i.id===id);if(x){x.followback=!x.followback;save()}}
+function nextItem(){return state.items.find(i=>i.status==='new')}
+
+function render(){
+ document.getElementById('pIg').classList.toggle('active',state.platform==='instagram');
+ document.getElementById('pYt').classList.toggle('active',state.platform==='youtube');
+ const q=state.items.filter(i=>i.status==='new').length,d=state.items.filter(i=>i.status==='done').length,f=state.items.filter(i=>i.followback).length;
+ document.getElementById('sQueue').textContent=q;
+ document.getElementById('sDone').textContent=d;
+ document.getElementById('sRate').textContent=(d?Math.round(f/d*100):0)+'%';
+
+ const n=nextItem(), box=document.getElementById('nextBox');
+ box.innerHTML=n
+ ? '<div class="candidate">'+esc(n.handle)+'</div><span class="badge">'+esc(n.platform)+'</span> <span class="badge">'+esc(n.category||'sem nicho')+'</span><div style="height:12px"></div><button id="openBtn">Abrir perfil/canal</button><div style="height:8px"></div><div class="row"><div class="half"><button class="good" onclick="mark('+n.id+',\\'done\\')">Já segui / subscrevi</button></div><div class="half"><button class="secondary" onclick="mark('+n.id+',\\'skip\\')">Ignorar</button></div></div>'
+ : '<div class="empty">Fila vazia.</div>';
+ if(n){document.getElementById('openBtn').onclick=()=>location.href=n.url}
+
+ const recent=state.items.slice(0,12), l=document.getElementById('list');
+ l.innerHTML=recent.length?recent.map(i=>'<div class="item"><div><b>'+esc(i.handle)+'</b><div class="meta">'+esc(i.platform)+' • '+esc(i.category||'sem nicho')+' • '+esc(i.status)+'</div></div><div>'+(i.status==='done'?'<button class="'+(i.followback?'good':'secondary')+'" onclick="followback('+i.id+')">'+(i.followback?'Seguiu de volta ✓':'Marcar retorno')+'</button>':'')+'</div></div>').join(''):'<div class="empty">Nenhum perfil ainda.</div>';
+}
+function exportCSV(){
+ const rows=[['platform','handle','url','category','status','followback','created','actionAt']];
+ state.items.forEach(i=>rows.push([i.platform,i.handle,i.url,i.category,i.status,i.followback,i.created,i.actionAt||'']));
+ const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='growth-assistant.csv';a.click();URL.revokeObjectURL(a.href);
+}
+function resetAll(){if(confirm('Apagar toda a fila e histórico?')){state={platform:'instagram',items:[]};save()}}
+render();
+</script>
+</body>
+</html>
