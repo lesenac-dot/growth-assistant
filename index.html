@@ -9,128 +9,196 @@
 <meta name="apple-mobile-web-app-title" content="Growth">
 <title>Growth Assistant</title>
 <style>
-:root{--bg:#0b0b0f;--card:#17171e;--line:#2c2c35;--txt:#f7f7fb;--muted:#a8a8b4;--accent:#7657ff;--good:#34d17b;--warn:#4a321d}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;padding:calc(12px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom))}
-.wrap{max-width:720px;margin:auto}.title{font-size:28px;font-weight:850}.sub,.small{color:var(--muted);font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:18px}.stat{text-align:center;padding:14px 6px}.stat b{font-size:21px;display:block}.stat span{font-size:11px;color:var(--muted)}.card{padding:15px;margin:12px 0}
-.row{display:flex;gap:8px;flex-wrap:wrap}.half{flex:1;min-width:125px}.label{font-size:12px;color:var(--muted);margin:4px 2px 7px}input,button{width:100%;border-radius:14px;padding:13px;font:inherit}input{border:1px solid var(--line);background:#101016;color:var(--txt)}button{border:0;background:var(--accent);color:white;font-weight:750}button.secondary{background:#282832}button.good{background:var(--good);color:#08150e}button.warn{background:var(--warn);color:#ffd5ad}
-.platforms{display:flex;gap:8px}.platforms button{background:#25252e}.platforms button.active{background:var(--accent)}.candidate{font-size:22px;font-weight:820;margin:6px 0}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px;color:var(--muted)}.list{margin-top:6px}.item{border-top:1px solid var(--line);padding:10px 0;display:flex;justify-content:space-between;gap:10px}.item:first-child{border-top:0}.item .meta{font-size:11px;color:var(--muted)}.item button{width:auto;padding:8px 10px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:18px}.footer{text-align:center;color:var(--muted);font-size:11px;margin:18px 0}
-.logo{width:52px;height:52px;border-radius:14px;background:#7657ff;display:grid;place-items:center;margin-bottom:10px}
+:root{--bg:#0b0b0f;--card:#17171e;--line:#2c2c35;--txt:#f7f7fb;--muted:#a8a8b4;--accent:#7657ff;--good:#35d07f;--warn:#ffb86b;--bad:#ff6b6b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}body{padding:calc(12px + env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom))}.wrap{max-width:760px;margin:auto}.top{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:15px;background:var(--accent);display:grid;place-items:center;box-shadow:0 10px 30px rgba(118,87,255,.22)}.title{font-size:28px;font-weight:850;line-height:1.05}.sub,.small{color:var(--muted);font-size:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:18px}.stat{text-align:center;padding:13px 5px}.stat b{font-size:20px;display:block}.stat span{font-size:10px;color:var(--muted)}.card{padding:15px;margin:12px 0}.row{display:flex;gap:8px;flex-wrap:wrap}.half{flex:1;min-width:128px}.label{font-size:12px;color:var(--muted);margin:4px 2px 7px}.sectionTitle{font-size:17px;font-weight:780;margin-bottom:9px}input,textarea,button{width:100%;border-radius:14px;padding:13px;font:inherit}input,textarea{border:1px solid var(--line);background:#101016;color:var(--txt);outline:none}textarea{min-height:110px;resize:vertical}input:focus,textarea:focus{border-color:#6750dd}button{border:0;background:var(--accent);color:white;font-weight:760;cursor:pointer}button.secondary{background:#282832}button.good{background:var(--good);color:#07160e}button.warn{background:#3c2a17;color:#ffd8ad}button.bad{background:#3b1f25;color:#ffc1c8}button:disabled{opacity:.45}.platforms{display:flex;gap:8px}.platforms button{background:#25252e}.platforms button.active{background:var(--accent)}.candidate{font-size:23px;font-weight:840;margin:7px 0}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px;color:var(--muted);margin-right:4px}.list{margin-top:6px}.item{border-top:1px solid var(--line);padding:11px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}.item:first-child{border-top:0}.item .meta{font-size:11px;color:var(--muted);margin-top:3px}.item button{width:auto;padding:8px 10px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:18px}.footer{text-align:center;color:var(--muted);font-size:11px;margin:18px 0}.switch{display:flex;align-items:center;justify-content:space-between;gap:12px}.switch input{width:26px;height:26px}.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#262630;border:1px solid #41414d;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:5;max-width:90vw;text-align:center}.toast.show{opacity:1}.hidden{display:none!important}.pending{border-color:#6750dd;box-shadow:0 0 0 1px rgba(118,87,255,.25)}.install{background:linear-gradient(135deg,#1e1e27,#17171e)}.dangerText{color:#ffb4b4}.goodText{color:#87e6ac}.divider{height:1px;background:var(--line);margin:12px 0}
+@media(max-width:430px){.stats{grid-template-columns:repeat(2,1fr)}.title{font-size:25px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="logo">
-<svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true">
-<path d="M14 70L38 47L58 58L84 22" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="14" cy="70" r="6" fill="white"/><circle cx="38" cy="47" r="6" fill="white"/><circle cx="58" cy="58" r="6" fill="white"/><circle cx="84" cy="22" r="6" fill="white"/>
-</svg>
-</div>
-<div class="title">Growth Assistant</div>
-<div class="sub">Instagram + YouTube • histórico salvo neste iPhone</div>
+  <div class="top">
+    <div class="logo" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 100 100">
+        <path d="M14 70L38 47L58 58L84 22" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="14" cy="70" r="6" fill="white"/><circle cx="38" cy="47" r="6" fill="white"/><circle cx="58" cy="58" r="6" fill="white"/><circle cx="84" cy="22" r="6" fill="white"/>
+      </svg>
+    </div>
+    <div><div class="title">Growth Assistant</div><div class="sub">Instagram + YouTube • fluxo rápido no iPhone</div></div>
+  </div>
 
-<div class="stats">
-<div class="stat"><b id="sQueue">0</b><span>na fila</span></div>
-<div class="stat"><b id="sDone">0</b><span>seguidos/subs</span></div>
-<div class="stat"><b id="sRate">0%</b><span>retorno</span></div>
-</div>
+  <div class="stats">
+    <div class="stat"><b id="sQueue">0</b><span>na fila</span></div>
+    <div class="stat"><b id="sDone">0</b><span>seguidos/subs</span></div>
+    <div class="stat"><b id="sBack">0</b><span>retornos</span></div>
+    <div class="stat"><b id="sRate">0%</b><span>conversão</span></div>
+  </div>
 
-<div class="card">
-<div class="platforms">
-<button id="pIg" class="active" onclick="setPlatform('instagram')">Instagram</button>
-<button id="pYt" onclick="setPlatform('youtube')">YouTube</button>
-</div>
-<div class="label" style="margin-top:12px">Encontrar pessoas/canais do seu nicho</div>
-<div class="row">
-<div class="half" style="flex:2"><input id="query" value="setup gaming streaming tecnologia"></div>
-<div class="half"><button onclick="searchPlatform()">Pesquisar</button></div>
-</div>
-<div class="small" style="margin-top:8px">A busca abre a plataforma escolhida. Você decide quem realmente vale acompanhar.</div>
-</div>
+  <div class="card pending" id="flowCard">
+    <div class="sectionTitle">Fluxo automático</div>
+    <div class="switch">
+      <div><b>Avançar para o próximo</b><div class="small">Após você confirmar, o próximo perfil abre automaticamente.</div></div>
+      <input id="autoNext" type="checkbox" onchange="toggleAuto()" aria-label="Avançar automaticamente">
+    </div>
+    <div class="divider"></div>
+    <div id="currentBox"></div>
+  </div>
 
-<div class="card">
-<div class="label">Adicionar perfil/canal</div>
-<input id="handle" placeholder="@perfil ou nome do canal">
-<div style="height:8px"></div>
-<input id="url" placeholder="Cole o link do perfil/canal">
-<div style="height:8px"></div>
-<input id="category" placeholder="Nicho: setup, hardware, gaming...">
-<div style="height:10px"></div>
-<button onclick="addCandidate()">Adicionar à fila</button>
-</div>
+  <div class="card">
+    <div class="sectionTitle">Adicionar rápido</div>
+    <div class="small" style="margin-bottom:8px">Cole o link. Eu identifico Instagram/YouTube e o perfil automaticamente.</div>
+    <input id="quickUrl" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="https://instagram.com/... ou youtube.com/@...">
+    <div style="height:8px"></div>
+    <input id="quickCategory" placeholder="Nicho opcional: setup, hardware, gaming...">
+    <div style="height:9px"></div>
+    <button onclick="quickAdd()">Adicionar à fila</button>
+  </div>
 
-<div class="card">
-<div class="label">Próximo</div>
-<div id="nextBox"></div>
-</div>
+  <div class="card">
+    <div class="sectionTitle">Encontrar candidatos</div>
+    <div class="platforms">
+      <button id="pIg" class="active" onclick="setPlatform('instagram')">Instagram</button>
+      <button id="pYt" onclick="setPlatform('youtube')">YouTube</button>
+    </div>
+    <div style="height:9px"></div>
+    <input id="query" value="setup gaming streaming tecnologia" placeholder="Tema / nicho">
+    <div style="height:8px"></div>
+    <button onclick="searchPlatform()">Pesquisar na plataforma</button>
+    <div class="small" style="margin-top:8px">A pesquisa abre a plataforma. Volte aqui, cole os links interessantes e o fluxo cuida da fila.</div>
+  </div>
 
-<div class="card">
-<div class="label">Últimos</div>
-<div id="list" class="list"></div>
-</div>
+  <div class="card">
+    <div class="sectionTitle">Importar vários links</div>
+    <textarea id="bulk" autocapitalize="off" spellcheck="false" placeholder="Um link por linha.\nTambém aceita: link | nicho"></textarea>
+    <div style="height:8px"></div>
+    <button onclick="bulkImport()">Importar lista</button>
+  </div>
 
-<div class="card">
-<div class="row">
-<div class="half"><button class="secondary" onclick="exportCSV()">Exportar CSV</button></div>
-<div class="half"><button class="warn" onclick="resetAll()">Limpar dados</button></div>
-</div>
-</div>
+  <div class="card">
+    <div class="sectionTitle">Fila e histórico</div>
+    <div id="list" class="list"></div>
+  </div>
 
-<div class="footer">Sem follow/sub automático em massa. Cada ação é escolhida e confirmada por você.</div>
-</div>
+  <div class="card install">
+    <div class="sectionTitle">Backup</div>
+    <div class="row">
+      <div class="half"><button class="secondary" onclick="exportCSV()">Exportar CSV</button></div>
+      <div class="half"><button class="secondary" onclick="exportJSON()">Backup JSON</button></div>
+    </div>
+    <div style="height:8px"></div>
+    <label class="small" for="restoreFile">Restaurar backup JSON</label>
+    <input id="restoreFile" type="file" accept="application/json,.json" onchange="restoreJSON(event)">
+    <div style="height:8px"></div>
+    <div class="row">
+      <div class="half"><button class="secondary" onclick="undoLast()">Desfazer última ação</button></div>
+      <div class="half"><button class="bad" onclick="resetAll()">Limpar tudo</button></div>
+    </div>
+  </div>
 
+  <div class="card install">
+    <b>Instalar no iPhone</b>
+    <div class="small" style="margin-top:5px">No Safari: Compartilhar → Adicionar à Tela de Início.</div>
+  </div>
+
+  <div class="footer">Versão 4 • O app não faz follow/sub em massa. Você confirma cada ação na própria plataforma.</div>
+</div>
+<div id="toast" class="toast"></div>
 <script>
-const KEY='growth_assistant_v3';
-let state;
-try{state=JSON.parse(localStorage.getItem(KEY))||{platform:'instagram',items:[]}}catch(e){state={platform:'instagram',items:[]}}
+const KEY='growth_assistant_v4';
+const DEFAULT={platform:'instagram',items:[],pendingId:null,autoNext:true,lastAction:null};
+let state=loadState();
 
+function loadState(){
+  try{const x=JSON.parse(localStorage.getItem(KEY));return Object.assign({},DEFAULT,x||{})}catch(e){return {...DEFAULT}}
+}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
-function setPlatform(p){state.platform=p;save()}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1800)}
 function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-
+function normalizeUrl(raw){let s=String(raw||'').trim();if(!s)return '';if(!/^https?:\/\//i.test(s))s='https://'+s;try{return new URL(s).href}catch(e){return ''}}
+function detect(url){
+  try{
+    const u=new URL(url),host=u.hostname.toLowerCase().replace(/^www\./,'');
+    const parts=u.pathname.split('/').filter(Boolean);
+    if(host==='instagram.com'||host.endsWith('.instagram.com')){
+      const handle=parts[0]||'';
+      if(!handle||['explore','reel','reels','p','stories','accounts'].includes(handle.toLowerCase())) return null;
+      return {platform:'instagram',handle:'@'+handle};
+    }
+    if(host==='youtube.com'||host==='m.youtube.com'){
+      let handle='';
+      if(parts[0]&&parts[0].startsWith('@')) handle=parts[0];
+      else if(parts[0]==='channel'&&parts[1]) handle='Canal '+parts[1].slice(0,8)+'…';
+      else if((parts[0]==='c'||parts[0]==='user')&&parts[1]) handle=parts[1];
+      if(!handle)return null;
+      return {platform:'youtube',handle};
+    }
+  }catch(e){}
+  return null;
+}
+function canonicalKey(url){try{const u=new URL(url);return (u.hostname.replace(/^www\./,'')+u.pathname.replace(/\/$/,'')).toLowerCase()}catch(e){return url.toLowerCase()}}
+function makeOpenUrl(item){
+  if(item.platform==='youtube'){
+    try{const u=new URL(item.url);if(!u.searchParams.has('sub_confirmation'))u.searchParams.set('sub_confirmation','1');return u.href}catch(e){}
+  }
+  return item.url;
+}
+function addItem(url,category){
+  const normalized=normalizeUrl(url);if(!normalized)return {ok:false,msg:'Link inválido.'};
+  const d=detect(normalized);if(!d)return {ok:false,msg:'Use um link do Instagram ou YouTube.'};
+  const key=canonicalKey(normalized);
+  if(state.items.some(i=>canonicalKey(i.url)===key))return {ok:false,msg:'Esse perfil já está na lista.'};
+  state.items.push({id:Date.now()+Math.floor(Math.random()*100000),platform:d.platform,handle:d.handle,url:normalized,category:String(category||'').trim(),status:'new',followback:false,created:new Date().toISOString(),actionAt:null});
+  if(!state.pendingId)state.pendingId=state.items.find(i=>i.status==='new')?.id||null;
+  return {ok:true,msg:d.handle+' adicionado.'};
+}
+function quickAdd(){
+  const url=document.getElementById('quickUrl').value,cat=document.getElementById('quickCategory').value;
+  const r=addItem(url,cat);if(r.ok){document.getElementById('quickUrl').value='';document.getElementById('quickCategory').value='';save()}toast(r.msg);
+}
+function bulkImport(){
+  const txt=document.getElementById('bulk').value.trim();if(!txt){toast('Cole pelo menos um link.');return}
+  let added=0,skipped=0;
+  txt.split(/\n+/).forEach(line=>{const parts=line.split('|');const r=addItem(parts[0],parts.slice(1).join('|').trim());r.ok?added++:skipped++});
+  document.getElementById('bulk').value='';save();toast(added+' adicionados'+(skipped?' • '+skipped+' ignorados':''));
+}
+function setPlatform(p){state.platform=p;save()}
 function searchPlatform(){
- const q=document.getElementById('query').value.trim(); if(!q)return;
- const u=state.platform==='youtube'
- ?'https://www.youtube.com/results?search_query='+encodeURIComponent(q)
- :'https://www.instagram.com/explore/search/keyword/?q='+encodeURIComponent(q);
- location.href=u;
+  const q=document.getElementById('query').value.trim();if(!q){toast('Digite um tema.');return}
+  const u=state.platform==='youtube'?'https://www.youtube.com/results?search_query='+encodeURIComponent(q):'https://www.instagram.com/explore/search/keyword/?q='+encodeURIComponent(q);
+  window.location.href=u;
 }
-function addCandidate(){
- const handle=document.getElementById('handle').value.trim();
- const url=document.getElementById('url').value.trim();
- const category=document.getElementById('category').value.trim();
- if(!handle||!url){alert('Preencha o perfil/canal e o link.');return}
- state.items.unshift({id:Date.now(),platform:state.platform,handle,url,category,status:'new',followback:false,created:new Date().toISOString()});
- ['handle','url','category'].forEach(id=>document.getElementById(id).value='');save();
+function toggleAuto(){state.autoNext=document.getElementById('autoNext').checked;save()}
+function nextNew(excludeId){return state.items.find(i=>i.status==='new'&&i.id!==excludeId)||null}
+function current(){let x=state.items.find(i=>i.id===state.pendingId&&i.status==='new');if(!x){x=state.items.find(i=>i.status==='new')||null;state.pendingId=x?x.id:null}return x}
+function openCurrent(){const x=current();if(!x){toast('Fila vazia.');return}state.pendingId=x.id;localStorage.setItem(KEY,JSON.stringify(state));window.location.href=makeOpenUrl(x)}
+function act(status){
+  const x=current();if(!x){toast('Nenhum perfil pendente.');return}
+  state.lastAction={id:x.id,prevStatus:x.status,prevActionAt:x.actionAt,pendingId:state.pendingId};
+  x.status=status;x.actionAt=new Date().toISOString();
+  const nxt=nextNew(x.id);state.pendingId=nxt?nxt.id:null;save();
+  toast(status==='done'?'Marcado como feito.':'Ignorado.');
+  if(state.autoNext&&nxt){window.location.href=makeOpenUrl(nxt)}
 }
-function mark(id,status){const x=state.items.find(i=>i.id===id);if(x){x.status=status;x.actionAt=new Date().toISOString();save()}}
-function followback(id){const x=state.items.find(i=>i.id===id);if(x){x.followback=!x.followback;save()}}
-function nextItem(){return state.items.find(i=>i.status==='new')}
-
+function toggleBack(id){const x=state.items.find(i=>i.id===id);if(!x)return;x.followback=!x.followback;save()}
+function removeItem(id){const x=state.items.find(i=>i.id===id);if(!x)return;if(!confirm('Remover '+x.handle+' da lista?'))return;state.items=state.items.filter(i=>i.id!==id);if(state.pendingId===id)state.pendingId=null;save()}
+function retryItem(id){const x=state.items.find(i=>i.id===id);if(!x)return;x.status='new';x.actionAt=null;state.pendingId=id;save();toast('Voltou para a fila.')}
+function undoLast(){const a=state.lastAction;if(!a){toast('Nada para desfazer.');return}const x=state.items.find(i=>i.id===a.id);if(x){x.status=a.prevStatus;x.actionAt=a.prevActionAt;state.pendingId=a.pendingId||x.id}state.lastAction=null;save();toast('Última ação desfeita.')}
 function render(){
- document.getElementById('pIg').classList.toggle('active',state.platform==='instagram');
- document.getElementById('pYt').classList.toggle('active',state.platform==='youtube');
- const q=state.items.filter(i=>i.status==='new').length,d=state.items.filter(i=>i.status==='done').length,f=state.items.filter(i=>i.followback).length;
- document.getElementById('sQueue').textContent=q;
- document.getElementById('sDone').textContent=d;
- document.getElementById('sRate').textContent=(d?Math.round(f/d*100):0)+'%';
-
- const n=nextItem(), box=document.getElementById('nextBox');
- box.innerHTML=n
- ? '<div class="candidate">'+esc(n.handle)+'</div><span class="badge">'+esc(n.platform)+'</span> <span class="badge">'+esc(n.category||'sem nicho')+'</span><div style="height:12px"></div><button id="openBtn">Abrir perfil/canal</button><div style="height:8px"></div><div class="row"><div class="half"><button class="good" onclick="mark('+n.id+',\\'done\\')">Já segui / subscrevi</button></div><div class="half"><button class="secondary" onclick="mark('+n.id+',\\'skip\\')">Ignorar</button></div></div>'
- : '<div class="empty">Fila vazia.</div>';
- if(n){document.getElementById('openBtn').onclick=()=>location.href=n.url}
-
- const recent=state.items.slice(0,12), l=document.getElementById('list');
- l.innerHTML=recent.length?recent.map(i=>'<div class="item"><div><b>'+esc(i.handle)+'</b><div class="meta">'+esc(i.platform)+' • '+esc(i.category||'sem nicho')+' • '+esc(i.status)+'</div></div><div>'+(i.status==='done'?'<button class="'+(i.followback?'good':'secondary')+'" onclick="followback('+i.id+')">'+(i.followback?'Seguiu de volta ✓':'Marcar retorno')+'</button>':'')+'</div></div>').join(''):'<div class="empty">Nenhum perfil ainda.</div>';
+  document.getElementById('autoNext').checked=!!state.autoNext;
+  document.getElementById('pIg').classList.toggle('active',state.platform==='instagram');
+  document.getElementById('pYt').classList.toggle('active',state.platform==='youtube');
+  const q=state.items.filter(i=>i.status==='new').length,d=state.items.filter(i=>i.status==='done').length,b=state.items.filter(i=>i.followback).length;
+  document.getElementById('sQueue').textContent=q;document.getElementById('sDone').textContent=d;document.getElementById('sBack').textContent=b;document.getElementById('sRate').textContent=(d?Math.round(b/d*100):0)+'%';
+  const x=current();
+  document.getElementById('currentBox').innerHTML=x?('<div class="candidate">'+esc(x.handle)+'</div><span class="badge">'+esc(x.platform)+'</span><span class="badge">'+esc(x.category||'sem nicho')+'</span><div style="height:12px"></div><button onclick="openCurrent()">Abrir '+(x.platform==='instagram'?'Instagram':'YouTube')+'</button><div style="height:8px"></div><div class="row"><div class="half"><button class="good" onclick="act(\'done\')">Segui / Inscrevi</button></div><div class="half"><button class="secondary" onclick="act(\'skip\')">Ignorar</button></div></div><div class="small" style="margin-top:8px">Depois de seguir/inscrever na plataforma, volte aqui e toque em <b>Segui / Inscrevi</b>. Com avanço automático ligado, o próximo abre sozinho.</div>'):'<div class="empty">Fila vazia. Adicione links abaixo.</div>';
+  const items=[...state.items].sort((a,b)=>b.created.localeCompare(a.created)).slice(0,30);
+  document.getElementById('list').innerHTML=items.length?items.map(i=>'<div class="item"><div><b>'+esc(i.handle)+'</b><div class="meta">'+esc(i.platform)+' • '+esc(i.category||'sem nicho')+' • '+(i.status==='new'?'na fila':i.status==='done'?'feito':'ignorado')+'</div></div><div>'+ (i.status==='done'?'<button class="'+(i.followback?'good':'secondary')+'" onclick="toggleBack('+i.id+')">'+(i.followback?'Retornou ✓':'Marcar retorno')+'</button>':'') +(i.status!=='new'?'<button class="secondary" onclick="retryItem('+i.id+')">Refazer</button>':'') +'<button class="bad" onclick="removeItem('+i.id+')">×</button></div></div>').join(''):'<div class="empty">Nenhum perfil ainda.</div>';
 }
-function exportCSV(){
- const rows=[['platform','handle','url','category','status','followback','created','actionAt']];
- state.items.forEach(i=>rows.push([i.platform,i.handle,i.url,i.category,i.status,i.followback,i.created,i.actionAt||'']));
- const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
- const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
- a.href=URL.createObjectURL(blob);a.download='growth-assistant.csv';a.click();URL.revokeObjectURL(a.href);
-}
-function resetAll(){if(confirm('Apagar toda a fila e histórico?')){state={platform:'instagram',items:[]};save()}}
+function dl(name,text,type){const blob=new Blob([text],{type}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),300)}
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function exportCSV(){const rows=[['platform','handle','url','category','status','followback','created','actionAt']];state.items.forEach(i=>rows.push([i.platform,i.handle,i.url,i.category,i.status,i.followback,i.created,i.actionAt||'']));dl('growth-assistant.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv;charset=utf-8');toast('CSV exportado.')}
+function exportJSON(){dl('growth-assistant-backup.json',JSON.stringify(state,null,2),'application/json');toast('Backup exportado.')}
+function restoreJSON(ev){const f=ev.target.files&&ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const obj=JSON.parse(r.result);if(!obj||!Array.isArray(obj.items))throw new Error('invalid');state=Object.assign({},DEFAULT,obj);save();toast('Backup restaurado.')}catch(e){toast('Backup inválido.')}ev.target.value=''};r.readAsText(f)}
+function resetAll(){if(!confirm('Apagar toda a fila e histórico deste iPhone?'))return;state={...DEFAULT,items:[]};save();toast('Dados apagados.')}
 render();
 </script>
 </body>
